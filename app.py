@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 import os, subprocess, requests
-
+import base64
 app = Flask(__name__)
 
 @app.route("/health", methods=["GET"])
@@ -22,9 +22,11 @@ def render_video():
             f.write(r.content)
 
     # download audio
-    audio = requests.get(audio_url)
+    audio_base64 = data["audio_base64"]
+    audio_bytes = base64.b64decode(audio_base64)
+
     with open("audio.mp3", "wb") as f:
-        f.write(audio.content)
+        f.write(audio_bytes)
 
     # create video
     subprocess.run([
