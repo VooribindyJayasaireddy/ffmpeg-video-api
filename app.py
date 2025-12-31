@@ -3,6 +3,10 @@ import os, subprocess, requests
 
 app = Flask(__name__)
 
+@app.route("/health", methods=["GET"])
+def health():
+    return {"status": "ok"}
+
 @app.route("/render", methods=["POST"])
 def render_video():
     data = request.json
